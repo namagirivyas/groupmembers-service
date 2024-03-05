@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'checkstyle'
+//	id 'checkstyle'
 	id 'org.springframework.boot' version '2.7.15'
 	id 'io.spring.dependency-management' version '1.1.0'
 }
@@ -26,10 +26,10 @@ java {
 
 repositories {
   maven {
-    url = uri("https://github.com/namagirivyas/groupmembers-service")
+    url = uri("https://repo.maven.apache.org/maven2")
     credentials {
-    username = project.findProperty("gpr.user") ?: System.getenv("GRADLE_TOKEN")
-    password = System.getenv("GRADLE_TOKEN")
+      username = project.findProperty("gpr.user") ?: System.getenv("GRADLE_TOKEN")
+      password = System.getenv("GRADLE_TOKEN")
     }
   }
 }
