@@ -24,7 +24,10 @@ jobs:
         java-version: '11'
 
     - name: Build with Gradle
-      run: chmod +x ./gradlew
+      run: |
+        chmod +x ./gradlew && 
+        ./gradlew build
+        
       env:
         GRADLE_OPTS: '-Dorg.gradle.daemon=false'
         GRADLE_USER_HOME: './gradle'
@@ -60,4 +63,10 @@ jobs:
         java-version: '11'
 
     - name: Run tests with Gradle
-      run: ./gradlew test
+      run: |
+        chmod +x ./gradlew && 
+        ./gradlew test
+      env:
+        GRADLE_OPTS: '-Dorg.gradle.daemon=false'
+        GRADLE_USER_HOME: './gradle'
+        PAT: ${{env.GRADLE_TOKEN}}
