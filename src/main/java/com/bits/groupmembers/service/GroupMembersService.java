@@ -31,11 +31,11 @@ public class GroupMembersService {
 
 		File file = new File(classLoader.getResource("com/bits/groupmembers/service/Students.json").getFile());
 		try {
-			log.info("Reading student information from JSON file");
+//			log.info("Reading student information from JSON file");
 			groupMembersInfoDto = mapper.readValue(file, GroupMembersInfoDto.class);
 
 		} catch (IOException e) {
-			log.error("Error occured while reading student information", e);
+//			log.error("Error occured while reading student information", e);
 		}
 		return groupMembersInfoDto;
 	}
@@ -53,14 +53,14 @@ public class GroupMembersService {
 		List<StudentInfoDto> studentInfoForElectives = new ArrayList<>();
 
 		try {
-			log.info("Reading student information from JSON file");
+//			log.info("Reading student information from JSON file");
 			GroupMembersInfoDto groupMembersInfoDto = mapper.readValue(sourceData, GroupMembersInfoDto.class);
 			List<StudentInfoDto> studentInfoDtoList = groupMembersInfoDto.getStudents();
 			
-			log.info("Retrieve student info for given electives {}", electives);
+//			log.info("Retrieve student info for given electives {}", electives);
 			studentInfoForElectives = studentInfoDtoList.stream().filter(a -> a.getElectiveCourses().contains(electives)).collect(Collectors.toList());
 		} catch (IOException e) {
-			log.error("Error occured while reading student information", e);
+//			log.error("Error occured while reading student information", e);
 		}
 		return studentInfoForElectives;
 	}
