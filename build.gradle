@@ -25,13 +25,13 @@ java {
 }
 
 repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/namagirivyas/groupmembers-service")
-        credentials {
-            username = project.findProperty("gpr.user") ?: System.getenv("GRADLE_TOKEN")
-            password = System.getenv("GRADLE_TOKEN")
-        }
+  maven {
+    url = uri("https://github.com/namagirivyas/groupmembers-service")
+    credentials {
+    username = project.findProperty("gpr.user") ?: System.getenv("GRADLE_TOKEN")
+    password = System.getenv("GRADLE_TOKEN")
     }
+  }
 }
 
 def lombokVersion = "1.18.28"
