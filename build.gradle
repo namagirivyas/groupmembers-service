@@ -46,7 +46,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-test'
 
     // Add JUnit Jupiter and Mockito dependencies for testing
-    testCompile 'junit:junit:4.13.2'
+    testImplementation 'junit:junit:4.13.2'
     
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
