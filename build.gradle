@@ -55,8 +55,6 @@ dependencies {
     
 }
 
-compileJava.dependsOn.remove('checkstyleMain')
-
 tasks.named('test') {
 	useJUnitPlatform()
 }
