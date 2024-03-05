@@ -51,6 +51,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
+
 
     steps:
     - name: Checkout repository
