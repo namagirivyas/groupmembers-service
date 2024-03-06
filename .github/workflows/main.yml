@@ -55,6 +55,7 @@ jobs:
     env:
       GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
       SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+      SONAR_ORG: ${{variables.SONAR_ORG}}
 
 
     steps:
@@ -78,6 +79,8 @@ jobs:
     - name: Sonarcloud scan
       run: |
         chmod +x ./gradlew && 
-        ./gradlew clean build jacocoTestReport jacocoTestCoverageVerification sonarqube -Dsonar.organization=MTech_Bits_Devops -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{env.GRADLE_TOKEN}}
+        ./gradlew clean build jacocoTestReport jacocoTestCoverageVerification sonarqube -Dsonar.projectKey=${{env.SONAR_ORG}} -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{env.SONAR_TOKEN}}
       env:
         SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+        SONAR_ORG: ${{variables.SONAR_ORG}}
+        GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
