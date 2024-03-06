@@ -65,15 +65,16 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
+  scan:
+    runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+      GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}    
 
-    - name: Run tests with Gradle
-      run: |
-        chmod +x ./gradlew && 
-        ./gradlew clean test
-      env:
-        GRADLE_OPTS: '-Dorg.gradle.daemon=false'
-        GRADLE_USER_HOME: './gradle'
-        PAT: ${{env.GRADLE_TOKEN}}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
     - name: Sonarcloud scan
       run: |
         chmod +x ./gradlew && 
@@ -81,4 +82,4 @@ jobs:
       env:
         SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
-        JAVA_PATH: '/opt/hostedtoolcache/Java_Adopt_jdk/11.0.22-7/x64'
+
