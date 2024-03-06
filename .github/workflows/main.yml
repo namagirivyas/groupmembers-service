@@ -81,3 +81,4 @@ jobs:
       env:
         SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
+        JAVA_PATH: '/opt/hostedtoolcache/Java_Adopt_jdk/11.0.22-7/x64'
