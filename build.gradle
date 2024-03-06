@@ -12,6 +12,14 @@ sonarqube {
         property "sonar.exclusions", "src/main/java/com/bits/groupmembers/controller/*, src/main/java/com/bits/groupmembers/BitsStudentServiceApplication.java, src/main/java/com/bits/groupmembers/dto/*"
     }
 }
+//sonarqube {
+//    properties {
+//        property 'sonar.host.url', 'https://sonarcloud.io'
+//        property 'sonar.organization', 'mtech-bits-devops'
+//        property 'sonar.projectKey', 'namagirivyas_groupmembers-service'
+//        property 'sonar.login', project.findProperty("sonar.login") ?: System.getenv("SONAR_TOKEN")
+//    }
+}
 // checkstyle {
  // toolVersion = '8.44'
   // checkstyle configuration
