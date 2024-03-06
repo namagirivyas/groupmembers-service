@@ -55,8 +55,6 @@ jobs:
     env:
       GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
       SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
-      SONAR_ORG: ${{variables.SONAR_ORG}}
-
 
     steps:
     - name: Checkout repository
@@ -82,5 +80,4 @@ jobs:
         ./gradlew clean build jacocoTestReport jacocoTestCoverageVerification sonarqube -Dsonar.projectKey=${{env.SONAR_ORG}} -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{env.SONAR_TOKEN}}
       env:
         SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
-        SONAR_ORG: ${{variables.SONAR_ORG}}
         GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
