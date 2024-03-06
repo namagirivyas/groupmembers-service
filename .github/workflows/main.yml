@@ -23,10 +23,10 @@ jobs:
         distribution: 'adopt'
         java-version: '11'
 
-    - name: Build with Gradle
+    - name: Clean Build with Gradle
       run: |
         chmod +x ./gradlew && 
-        ./gradlew build
+        ./gradlew clean build
         
       env:
         GRADLE_OPTS: '-Dorg.gradle.daemon=false'
@@ -53,6 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
+      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
 
 
     steps:
@@ -68,8 +69,14 @@ jobs:
     - name: Run tests with Gradle
       run: |
         chmod +x ./gradlew && 
-        ./gradlew test
+        ./gradlew clean test
       env:
         GRADLE_OPTS: '-Dorg.gradle.daemon=false'
         GRADLE_USER_HOME: './gradle'
         PAT: ${{env.GRADLE_TOKEN}}
+    - name: Sonarcloud scan
+      run: |
+        chmod +x ./gradlew && 
+        ./gradlew clean build jacocoTestReport jacocoTestCoverageVerification sonarqube -Dsonar.organization=MTech_Bits_Devops -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{env.GRADLE_TOKEN}}
+      env:
+        SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
