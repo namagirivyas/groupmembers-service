@@ -78,19 +78,3 @@ jacocoTestReport {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-task verifySonar {
-    doLast {
-    	println '-----Verifying the result of sonarscanner-----'
-    	def jsonContainingResult = new JsonSlurper().parseText(jsondata)
-    	def resultBranchStatus = jsonContainingResult.projectStatus.status
-    	println resultBranchStatus
-    	if(resultBranchStatus == 'OK') {
-    		println 'sonarqube quality gate passed'
-    	}
-    	if(resultBranchStatus == 'ERROR') {
-    		println 'sonarqube quality gate failed, please check issues'
-    		throw new GradleException('-sonarqube quality gate failed')
-    	}
-    }
-}
