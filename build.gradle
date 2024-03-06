@@ -19,7 +19,7 @@ sonarqube {
 //        property 'sonar.projectKey', 'namagirivyas_groupmembers-service'
 //        property 'sonar.login', project.findProperty("sonar.login") ?: System.getenv("SONAR_TOKEN")
 //    }
-}
+//}
 // checkstyle {
  // toolVersion = '8.44'
   // checkstyle configuration
