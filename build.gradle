@@ -19,8 +19,8 @@ sonarqube {
 
 checkstyle {
   toolVersion = '8.45'
-  checkstyle configuration
   configFile = file("${rootProject.projectDir}/config/checkstyle/google_checks.xml")
+  ignoreFailures = false
   showViolations = true
 }
 
