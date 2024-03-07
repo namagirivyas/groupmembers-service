@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	id 'jacoco'
-//	id 'checkstyle'
+	id 'checkstyle'
 	id 'org.springframework.boot' version '2.7.15'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id 'org.sonarqube' version '3.3'
@@ -16,16 +16,17 @@ sonarqube {
         property "sonar.token", "cc46a248837817825e9929324ca4932bdc71b0b6"
     }
 }
-// checkstyle {
- // toolVersion = '8.44'
-  // checkstyle configuration
-  // configFile = file("${rootProject.projectDir}/config/checkstyle/google_checks.xml")
-  // showViolations = true
-//}
 
-//tasks.withType(JavaCompile) {
-  //dependsOn 'checkstyleMain'
-//}
+checkstyle {
+  toolVersion = '8.45'
+  checkstyle configuration
+  configFile = file("${rootProject.projectDir}/config/checkstyle/google_checks.xml")
+  showViolations = true
+}
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+}
 
 group = 'com.bits.groupmembers-service'
 version = '1.0.0'
@@ -83,3 +84,4 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+check.dependsOn 'checkstyleMain' 
