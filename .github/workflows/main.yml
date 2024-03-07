@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-      - branches
+      - 'feature/*'
+      - 'bugfix/*'
 
 jobs:
   build:
@@ -17,16 +18,16 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up JDK 11
+    - name: Set up JDK 17
       uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
-        java-version: '11'
+        java-version: '17'
 
-    - name: Build with Gradle
+    - name: Clean Build with Gradle
       run: |
         chmod +x ./gradlew && 
-        ./gradlew build
+        ./gradlew clean build
         
       env:
         GRADLE_OPTS: '-Dorg.gradle.daemon=false'
@@ -53,23 +54,37 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
-
+      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up JDK 11
+    - name: Set up JDK 17
       uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
-        java-version: '11'
+        java-version: '17'
+  scan:
+    runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+      GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}    
 
-    - name: Run tests with Gradle
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '17'      
+
+    - name: Sonarcloud scan
       run: |
         chmod +x ./gradlew && 
-        ./gradlew test
+        ./gradlew clean build jacocoTestReport jacocoTestCoverageVerification sonarqube -Dsonar.organization=mtech-bits-devops -Dsonar.projectKey=namagirivyas_groupmembers-service -Dsonar.host.url='https://sonarcloud.io' -Dsonar.token=cc46a248837817825e9929324ca4932bdc71b0b6
       env:
-        GRADLE_OPTS: '-Dorg.gradle.daemon=false'
-        GRADLE_USER_HOME: './gradle'
-        PAT: ${{env.GRADLE_TOKEN}}
+        SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+        GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
