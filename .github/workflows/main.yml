@@ -88,4 +88,3 @@ jobs:
       env:
         SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         GRADLE_TOKEN: ${{secrets.GRADLE_TOKEN}}
-
