@@ -13,7 +13,7 @@ sonarqube {
         property "sonar.projectKey", "namagirivyas_groupmembers-service"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.organization", "mtech-bits-devops"
-        property "sonar.login", "cc46a248837817825e9929324ca4932bdc71b0b6"
+        property "sonar.token", "cc46a248837817825e9929324ca4932bdc71b0b6"
     }
 }
 // checkstyle {
