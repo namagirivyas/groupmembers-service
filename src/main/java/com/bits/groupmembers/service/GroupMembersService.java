@@ -1,8 +1,8 @@
 package com.bits.groupmembers.service;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,49 +20,79 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GroupMembersService {
 
-	@Autowired
-	private ObjectMapper mapper;
-	
-	public GroupMembersInfoDto getGroupMembersDetails() {
-		GroupMembersInfoDto groupMembersInfoDto = null;
+    @Autowired
+    private ObjectMapper mapper;
 
-		ObjectMapper mapper = new ObjectMapper();
-		ClassLoader classLoader = getClass().getClassLoader();
+    public GroupMembersInfoDto getGroupMembersDetails() {
+        String filePath = "com/bits/groupmembers/service/Students.json";
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
 
-		File file = new File(classLoader.getResource("com/bits/groupmembers/service/Students.json").getFile());
-		try {
-			log.info("Reading student information from JSON file");
-			groupMembersInfoDto = mapper.readValue(file, GroupMembersInfoDto.class);
+        if (inputStream == null) {
+       //     log.error("File '{}' not found", filePath);
+            return null;
+        }
 
-		} catch (IOException e) {
-			log.error("Error occured while reading student information", e);
-		}
-		return groupMembersInfoDto;
-	}
+        try {
+            return mapper.readValue(inputStream, GroupMembersInfoDto.class);
+        } catch (IOException e) {
+         //   log.error("Error occurred while reading student information", e);
+            return null;
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+           //     log.error("Error occurred while closing input stream", e);
+            }
+        }
+    }
 
-	public List<StudentInfoDto> getAllGroupMembersForGivenElectives(String electives) {
-//		ObjectMapper mapper = new ObjectMapper();
-		ClassLoader classLoader = getClass().getClassLoader();
+    public List<StudentInfoDto> getAllGroupMembersForGivenElectives(String electives) {
+        String filePath = "com/bits/groupmembers/service/Students.json";
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
 
-		File file = new File(classLoader.getResource("com/bits/groupmembers/service/Students.json").getFile());
-		List<StudentInfoDto> studentInfoForElectives = getAllGroupMembersFrom(electives, file);
-		return studentInfoForElectives;
-	}
-	
-	public List<StudentInfoDto> getAllGroupMembersFrom(String electives, File sourceData) {
-		List<StudentInfoDto> studentInfoForElectives = new ArrayList<>();
+        if (inputStream == null) {
+         //   log.error("File '{}' not found", filePath);
+            return Collections.emptyList();
+        }
 
-		try {
-			log.info("Reading student information from JSON file");
-			GroupMembersInfoDto groupMembersInfoDto = mapper.readValue(sourceData, GroupMembersInfoDto.class);
-			List<StudentInfoDto> studentInfoDtoList = groupMembersInfoDto.getStudents();
-			
-			log.info("Retrieve student info for given electives {}", electives);
-			studentInfoForElectives = studentInfoDtoList.stream().filter(a -> a.getElectiveCourses().contains(electives)).collect(Collectors.toList());
-		} catch (IOException e) {
-			log.error("Error occured while reading student information", e);
-		}
-		return studentInfoForElectives;
-	}
+        try {
+            File file = File.createTempFile("Students", ".json");
+            file.deleteOnExit();
+            try (OutputStream outputStream = new FileOutputStream(file)) {
+                byte[] buffer = new byte[8192];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+            return getAllGroupMembersFrom(electives, file);
+        } catch (IOException e) {
+         //   log.error("Error occurred while creating temporary file", e);
+            return Collections.emptyList();
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+          //     log.error("Error occurred while closing input stream", e);
+            }
+        }
+    }
+
+    public List<StudentInfoDto> getAllGroupMembersFrom(String electives, File sourceData) {
+
+        try {
+        //    log.info("Reading student information from JSON file");
+            GroupMembersInfoDto groupMembersInfoDto = mapper.readValue(sourceData, GroupMembersInfoDto.class);
+            List<StudentInfoDto> studentInfoDtoList = groupMembersInfoDto.getStudents();
+
+        //    log.info("Retrieving student info for given electives {}", electives);
+            return studentInfoDtoList.stream()
+                    .filter(studentInfoDto -> studentInfoDto.getElectiveCourses().contains(electives))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+         //   log.error("Error occurred while reading student information", e);
+            return Collections.emptyList();
+        }
+    }
 
 }
